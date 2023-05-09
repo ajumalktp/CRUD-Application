@@ -1,0 +1,14 @@
+const mongoose = require('mongoose')
+
+const dbConnect=()=>{
+    mongoose.set('strictQuery',true)
+    mongoose.connect('mongodb://127.0.0.1:27017/crud_app')
+    .then(()=>{
+        console.log('server connected to the database!');
+    })
+    .catch(err=>{
+        console.log('error'+err)
+    })
+}
+
+module.exports = dbConnect;
