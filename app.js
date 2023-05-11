@@ -4,6 +4,7 @@ const express=require('express')
 const {engine}=require('express-handlebars')
 const session=require('express-session');
 const { connect } = require('http2');
+const userRouter = require('./routes/userRouter')
 
 const app=express()
 
@@ -24,31 +25,17 @@ app.use(
         resave:false,
     })
 )
+app.use(function(req, res, next) {
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    next();
+  });
+
 app.use((req,res,next)=>{
     res.locals.messsage;
     delete req.session.messsage;
     next()
 })
-app.get('/',(req,res)=>{
-    res.render('userLogin')
-})
-app.get('/signUp',(req,res)=>{
-    res.render('userSignUP')
-})
-app.get('/home',(req,res)=>{
-    res.render('userHome')
-})
-app.get('/adminLogin',(req,res)=>{
-    res.render('adminLogin')
-})
-app.get('/editUser',(req,res)=>{
-    res.render('editUser')
-})
-app.get('/createUser',(req,res)=>{
-    res.render('createUser')
-})
-app.get('/adminHome',(req,res)=>{
-    res.render('adminHome')
-})
+
+app.use('/',userRouter)
 
 app.listen(PORT,()=>console.log(`server started at http://localhost:${PORT}`))
