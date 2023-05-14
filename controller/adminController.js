@@ -1,0 +1,109 @@
+const express = require('express')
+const userModel = require('../models/userModel')
+const router = express.Router()
+
+const adminHome = async(req,res)=>{
+    const users=await userModel.find().lean();
+
+    if(req.session.admin){
+
+        res.render('adminHome', {users})
+    }else{
+
+        res.redirect('/admin/adminLogin')
+    }
+}
+
+const adminLogin = (req,res)=>{
+    if(req.session.admin){
+     res.redirect('/admin')   
+    }else{
+
+        res.render('adminLogin')
+    }
+}
+
+const login =(req,res)=>{
+    const email = 'admin@gmail.com'
+    const password ='1234'
+    
+    if(email == req.body.email && password == req.body.password){
+        req.session.admin={
+            id:email
+        }
+        res.redirect('/admin/')
+    }else{
+        res.render('adminLogin',{error:true,message:'User not found!!!'})
+    }  
+}
+
+const logOut = (req,res)=>{
+
+    req.session.admin=null
+    res.redirect('/admin/adminLogin')
+}
+
+
+const getEditUser=async (req, res)=>{
+    const _id=req.params.id;
+    const user=await userModel.findOne({_id}).lean();
+    console.log(user)
+    res.render("editUser", {user})
+}
+const editUser=async (req, res)=>{
+    const _id=req.body._id
+    await userModel.findByIdAndUpdate(_id,{
+        $set:{
+            ...req.body
+        }
+    })
+    console.log(req.body)
+    res.redirect("/admin/")
+}
+
+const deleteUser= async(req,res)=>{
+    const id = req.params.id
+    await userModel.deleteOne({_id:id})
+    res.redirect('/admin/')
+}
+
+
+const searchUser= async(req,res)=>{
+    const name= req.body.name
+    const users= await userModel.find({name: new RegExp(name, "i")}).lean();
+
+    res.render('adminHome', {users})
+}
+
+const createUser = (req,res)=>{
+    const {name, email, phone , password} = req.body;
+   
+
+if(email ==""|| name == ""|| phone ==""||password==""){
+    const error ="all field reqiured"
+    res.render('createUser',{error})
+}
+else{
+    const user =new userModel({email:email,name:name,phone:phone,password:password})
+    user.save()
+    .then(result => {
+        if(result){
+            console.log(result)
+            res.redirect('/admin')
+        }
+    }).catch(error => {console.log(error);})
+}
+
+
+}
+
+const getCreateUser = (req,res)=>{
+    res.render('createUser')
+}
+
+
+
+
+module.exports={
+  adminHome,adminLogin,login,logOut,deleteUser, editUser, getEditUser, searchUser,createUser,getCreateUser
+}

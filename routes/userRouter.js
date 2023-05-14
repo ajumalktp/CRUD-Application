@@ -9,7 +9,7 @@ router.get('/signUp',getSignup)
 router.get('/logOut',userLogout)
 
 router.post('/login',userLogin)
-router.post('/signUP',signUp)
+router.post('/signUp',signUp)
 
 
 module.exports = router;

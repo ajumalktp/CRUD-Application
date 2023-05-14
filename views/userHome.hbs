@@ -1,16 +1,16 @@
 <div class="background-photo">
   <div class="content">
     <div class="header">
-      <h1>Home Page</h1>
+      <h1>Well Come</h1>
     </div>
     <div class="content-text">
-      <p>Welcome to My Home Page!</p>
+      <p>To your Home Page <span id="user-name">{{name}}</span> !!!</p>
     </div>
     <div class="content-text2">
       <h3>Thank You!</h3>
     </div>
     <div class="content-btn">
-      <button>Log Out</button>
+      <a href="/logOut"><button >Log Out</button></a>
     </div>
   </div>
 </div>
@@ -98,5 +98,11 @@
 .content-btn button:hover{
   background-color: rgb(38, 38, 38);
   color: white;
+}
+#user-name{
+  text-transform:uppercase;
+  font-size: 20px;
+  font-weight: 800;
+  color:#00ff81;
 }
 </style>
