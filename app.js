@@ -1,10 +1,11 @@
 // imports
-const connectDB=require('./dbConnect')
+const dbConnect=require('./dbConnect')
 const express=require('express')
 const {engine}=require('express-handlebars')
 const session=require('express-session');
 const { connect } = require('http2');
 const userRouter = require('./routes/userRouter')
+const adminRouter = require('./routes/adminRouter')
 
 const app=express()
 
@@ -12,7 +13,7 @@ const app=express()
 const PORT=8000;
 
 // database connection
-connectDB()
+dbConnect()
 
 app.engine('hbs', engine({extname:'.hbs'}))
 app.set('view engine','hbs')
@@ -37,5 +38,6 @@ app.use((req,res,next)=>{
 })
 
 app.use('/',userRouter)
+app.use('/admin/',adminRouter)
 
 app.listen(PORT,()=>console.log(`server started at http://localhost:${PORT}`))
