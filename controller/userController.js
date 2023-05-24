@@ -38,8 +38,12 @@ const getSignup = (req, res) => {
   res.render("userSignUp");
 };
 const signUp = async (req, res) => {
-  const { name, email, phone, password } = req.body;
-  const duplicate = await userModel.findOne({ email });
+  
+  try{
+    const { name, email, phone, password } = req.body;
+  }catch{
+    console.log()
+  }
   
   if (email == "" || password == "" || phone == "" || password == "") {
     const err = "all field required";
