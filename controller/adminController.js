@@ -1,12 +1,27 @@
 const express = require('express')
 const userModel = require('../models/userModel')
 const router = express.Router()
+const multer = require('multer')
+const fs = require('fs')
+const path = require('path')
+const app = express()
+
+
+var storage = multer.diskStorage({
+  destination: function(req,file,cb){
+    cb(null,'public/image/')
+  },
+  filename:function(req,file,cb){
+    cb(null,file.fieldname+"_"+Date.now()+"_"+file.originalname);
+  }
+})
+var upload = multer({storage:storage}).single("image")
+
 
 const adminHome = async(req,res)=>{
     const users=await userModel.find().lean();
-
+    
     if(req.session.admin){
-
         res.render('adminHome', {users})
     }else{
 
@@ -47,17 +62,28 @@ const logOut = (req,res)=>{
 const getEditUser=async (req, res)=>{
     const _id=req.params.id;
     const user=await userModel.findOne({_id}).lean();
-    console.log(user)
+    // console.log(user)
     res.render("editUser", {user})
 }
 const editUser=async (req, res)=>{
     const _id=req.body._id
-    await userModel.findByIdAndUpdate(_id,{
-        $set:{
-            ...req.body
+        if(req.file){
+            await userModel.findByIdAndUpdate(_id,{
+                $set:{
+                    ...req.body,
+                    image:req.file.filename,
+                }
+            })
+        }else{
+            await userModel.findByIdAndUpdate(_id,{
+                $set:{
+                    ...req.body
+                }
+            })
         }
-    })
-    console.log(req.body)
+    
+    
+    
     res.redirect("/admin/")
 }
 
@@ -77,14 +103,21 @@ const searchUser= async(req,res)=>{
 
 const createUser = (req,res)=>{
     const {name, email, phone , password} = req.body;
-   
-
+    
 if(email ==""|| name == ""|| phone ==""||password==""){
     const error ="all field reqiured"
     res.render('createUser',{error})
 }
 else{
-    const user =new userModel({email:email,name:name,phone:phone,password:password})
+    if(req.file){
+         user =new userModel({email:email,name:name,phone:phone,password:password,image:req.file.filename
+        })
+        }else{
+            user =new userModel({email:email,name:name,phone:phone,password:password
+            })
+        }
+     
+    
     user.save()
     .then(result => {
         if(result){
@@ -102,8 +135,6 @@ const getCreateUser = (req,res)=>{
 }
 
 
-
-
 module.exports={
-  adminHome,adminLogin,login,logOut,deleteUser, editUser, getEditUser, searchUser,createUser,getCreateUser
+  adminHome,adminLogin,login,logOut,deleteUser, editUser, getEditUser, searchUser,createUser,getCreateUser,upload,
 }

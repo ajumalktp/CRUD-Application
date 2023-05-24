@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { adminHome, adminLogin, login, logOut, getEditUser, editUser, deleteUser, searchUser, createUser, getCreateUser } = require('../controller/adminController');
+const { adminHome, adminLogin, login, logOut, getEditUser, editUser, deleteUser, searchUser, createUser, getCreateUser,upload,deleteImage } = require('../controller/adminController');
 const {route} = require('./userRouter')
 
 
@@ -12,10 +12,10 @@ router.post('/adminLogin',login)
 router.get('/logOut',logOut)
 
 router.get("/edit/:id", getEditUser)
-router.post("/edit-user", editUser)
+router.post("/edit-user",upload,editUser)
 router.get("/delete-user/:id", deleteUser)
 router.post("/search-user", searchUser)
 router.get('/create-user',getCreateUser)
-router.post('/create-users',createUser)
+router.post('/create-users',upload,createUser)
 
 module.exports = router;

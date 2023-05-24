@@ -1,6 +1,6 @@
 const express =require('express')
 const router = express.Router();
-const {getUserHome, getLogin, getSignup, userLogout,signUp, userLogin,getUserEdit,userEdit} =require('../controller/userController')
+const {getUserHome, getLogin, getSignup, userLogout,signUp, userLogin,getUserEdit,userEdit,upload} =require('../controller/userController')
 const userModel =require('../models/userModel')
 
 router.get('/',getUserHome)
@@ -10,8 +10,8 @@ router.get('/logOut',userLogout)
 router.get('/edit/:id',getUserEdit)
 
 router.post('/login',userLogin)
-router.post('/signUp',signUp)
-router.post('/edit-user',userEdit)
+router.post('/signUp',upload,signUp)
+router.post('/edit-user',upload,userEdit)
 
 
 module.exports = router;

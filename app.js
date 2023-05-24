@@ -6,11 +6,12 @@ const session=require('express-session');
 const { connect } = require('http2');
 const userRouter = require('./routes/userRouter')
 const adminRouter = require('./routes/adminRouter')
+const path = require('path')
 
 const app=express()
 
 
-const PORT=8000;
+const PORT=50000;
 
 // database connection
 dbConnect()
@@ -26,6 +27,7 @@ app.use(
         resave:false,
     })
 )
+app.use(express.static(path.join(__dirname,'public')));
 app.use(function(req, res, next) {
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     next();
