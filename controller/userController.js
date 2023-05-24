@@ -1,6 +1,20 @@
 const express = require("express");
 const userModel = require("../models/userModel");
 const router = express.Router();
+const multer = require('multer')
+
+
+var storage = multer.diskStorage({
+  destination: function(req,file,cb){
+    cb(null,'public/image/')
+  },
+  filename:function(req,file,cb){
+    cb(null,file.fieldname+"_"+Date.now()+"_"+file.originalname);
+  }
+})
+var upload = multer({
+  storage:storage,
+}).single("image")
 
 const getUserHome = async (req, res) => {
     if (req.session.user) {
@@ -26,7 +40,7 @@ const getSignup = (req, res) => {
 const signUp = async (req, res) => {
   const { name, email, phone, password } = req.body;
   const duplicate = await userModel.findOne({ email });
-
+  
   if (email == "" || password == "" || phone == "" || password == "") {
     const err = "all field required";
     res.render("userSignUp", { err });
@@ -37,6 +51,11 @@ const signUp = async (req, res) => {
       phone: phone,
       password: password,
     });
+    if(req.file){
+      user = new userModel({
+        image:req.file.filename
+      })
+    }
     user
       .save()
       .then((result) => {
@@ -74,24 +93,29 @@ const userLogin = async (req, res) => {
       res.redirect("/");
     }
   } else {
-    const error = "no user found";
+    const error = "user not found";
     res.render("userLogin", { error });
   }
 };
 const getUserEdit = async (req, res) => {
-  console.log("xsf");
   const _id = req.params.id;
   const user = await userModel.findOne({ _id }).lean();
-  console.log(user);
   res.render("userEdit", { user });
 };
 const userEdit = async (req, res) => {
   const _id = req.body._id;
+  if(req.file){
   await userModel.findByIdAndUpdate(_id, {
     $set: {
-      ...req.body,
+      image:req.file.filename
     },
   });
+}
+await userModel.findByIdAndUpdate(_id, {
+  $set: {
+    ...req.body
+  },
+});
   console.log(req.body);
   res.redirect("/");
 };
@@ -108,4 +132,5 @@ module.exports = {
   userLogin,
   getUserEdit,
   userEdit,
+  upload
 };

@@ -6,11 +6,11 @@
                 <div class="main-agileinfo">
                   <div class="agileits-top">
                     <h2>SignUp Now</h2>
-                    <form action="/signUp" method="post">
+                    <form action="/signUp" method="post" enctype="multipart/form-data">
                       <input class="text" type="text" name="name" placeholder="Username" required="">
                       <input class="text email" type="email" name="email" placeholder="Email" required="">
                       <input class="text" type="number" name="phone" placeholder="Phone No" required="">
-                      <input class="text w3lpass" type="password" name="password" placeholder="Password" required="">
+                      <input style="margin-bottom: 20px;" class="text w3lpass" type="password" name="password" placeholder="Password" required="">
                       <input type="submit" value="SIGNUP">
                     </form>
                     <p>Already have Account? <a href="/"> Login Now!</a></p>
@@ -102,11 +102,9 @@ h2{
 }
 .center input {
   width: 100%;
-  padding: 15px;
   margin: 5px;
-  border-radius: 1px;
-  border: 1px solid #ccc;
   font-family: inherit;
+  margin-bottom: 20px;
 }
 button {
 	border-radius: 20px;
