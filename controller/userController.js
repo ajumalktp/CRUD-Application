@@ -1,30 +1,27 @@
-const express = require("express");
 const userModel = require("../models/userModel");
-const router = express.Router();
-const multer = require('multer')
-
+const multer = require("multer");
 
 var storage = multer.diskStorage({
-  destination: function(req,file,cb){
-    cb(null,'public/image/')
+  destination: function (req, file, cb) {
+    cb(null, "public/image/");
   },
-  filename:function(req,file,cb){
-    cb(null,file.fieldname+"_"+Date.now()+"_"+file.originalname);
-  }
-})
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
+  },
+});
 var upload = multer({
-  storage:storage,
-}).single("image")
+  storage: storage,
+}).single("image");
 
 const getUserHome = async (req, res) => {
-    if (req.session.user) {
-      const user = await userModel.findById(req.session.user.id).lean();
-      console.log("user", user);
+  if (req.session.user) {
+    const user = await userModel.findById(req.session.user.id).lean();
+    console.log("user", user);
 
-      res.render("userHome", { user });
-    } else {
-      res.redirect("/login");
-    }
+    res.render("userHome", { user });
+  } else {
+    res.redirect("/login");
+  }
 };
 
 const getLogin = (req, res) => {
@@ -38,22 +35,22 @@ const getSignup = (req, res) => {
   res.render("userSignUp");
 };
 const signUp = async (req, res) => {
-    const { name, email, phone, password } = req.body;
-    const duplicate = await userModel.findOne({email})
-    const error = "Email already exists"
-    if(duplicate){
-      res.render('userSignUP',{error})
-    }else{
+  const { name, email, phone, password } = req.body;
+  const duplicate = await userModel.findOne({ email });
+  const error = "Email already exists";
+  if (duplicate) {
+    res.render("userSignUP", { error });
+  } else {
     const user = new userModel({
       email: email,
       name: name,
       phone: phone,
       password: password,
     });
-    if(req.file){
+    if (req.file) {
       user = new userModel({
-        image:req.file.filename
-      })
+        image: req.file.filename,
+      });
     }
     user
       .save()
@@ -66,18 +63,18 @@ const signUp = async (req, res) => {
       .catch((error) => {
         console.log(error);
       });
-    }
   }
-  //else{
-  //     const user =new userModel({email:email,name:name,phone:phone,password:password})
-  //     user.save((err,data)=>{
-  //         if(err){
-  //             console.log(err);
-  //         }else{
-  //             res.redirect('./login')
-  //         }
-  //     })
-  // }
+};
+//else{
+//     const user =new userModel({email:email,name:name,phone:phone,password:password})
+//     user.save((err,data)=>{
+//         if(err){
+//             console.log(err);
+//         }else{
+//             res.redirect('./login')
+//         }
+//     })
+// }
 
 const userLogin = async (req, res) => {
   const email = req.body.email;
@@ -86,19 +83,19 @@ const userLogin = async (req, res) => {
   const userOg = await userModel.findOne({ email });
   if (userOg) {
     if (password == userOg.password) {
-      req.session.user=true
+      req.session.user = true;
       req.session.user = {
         id: userOg._id,
         name: userOg.name,
       };
       res.redirect("/");
-    }else if(password!==userOg.password||email!==userOg.email){
+    } else if (password !== userOg.password || email !== userOg.email) {
       const error = "Invalid Email or Password";
       res.render("userLogin", { error });
     }
-  }else{
-    error ="user not found"
-    res.render("userLogin",{error});
+  } else {
+    error = "user not found";
+    res.render("userLogin", { error });
   }
 };
 const getUserEdit = async (req, res) => {
@@ -108,18 +105,18 @@ const getUserEdit = async (req, res) => {
 };
 const userEdit = async (req, res) => {
   const _id = req.body._id;
-  if(req.file){
+  if (req.file) {
+    await userModel.findByIdAndUpdate(_id, {
+      $set: {
+        image: req.file.filename,
+      },
+    });
+  }
   await userModel.findByIdAndUpdate(_id, {
     $set: {
-      image:req.file.filename
+      ...req.body,
     },
   });
-}
-await userModel.findByIdAndUpdate(_id, {
-  $set: {
-    ...req.body
-  },
-});
   console.log(req.body);
   res.redirect("/");
 };
@@ -136,5 +133,5 @@ module.exports = {
   userLogin,
   getUserEdit,
   userEdit,
-  upload
+  upload,
 };

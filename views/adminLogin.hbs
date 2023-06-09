@@ -1,164 +1,194 @@
 <div class="container" onclick="onclick">
-    <div class="top"></div>
-    <div class="bottom"></div>
-    <form action="/admin/adminLogin" method="post" id="formValidation">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <form action="/admin/adminLogin" method="post" id="formValidation">
     <div class="center">
       <h2>Admin Login</h2>
       <span class="error">{{error}}</span>
-      <input type="email" placeholder="email" name="email"/>
-      <input type="password" placeholder="password" name="password"/>
+      <input type="email" placeholder="email" name="email" />
+      <input type="password" placeholder="password" name="password" />
       <button type="submit">Login</button>
     </div>
-    </form>
-  </div>
-  <script>
-    $(document).ready(function() {
-            $("#formValidation").validate({
-                rules: {
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    password: {
-                        required: true
-                    }
-                },
-                messages: {
-                    email: {
-                        required: "Please enter your email",
-                        email: "Please enter a valid email address",
-                        remote: "User not found"
-                    },
-                    password: {
-                        required: "Please enter your password",
-                        remote: "Incorrect password"
-                    }
-                },
-            });
-        });
-  </script>
-  <style>
-    @import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
-*, *:before, *:after {
-  box-sizing: border-box;
-}
-.signup-click{
+  </form>
+</div>
+<script>
+  $(document).ready(function () {
+    $("#formValidation").validate({
+      rules: {
+        email:
+          { required: true, email: true }, password: { required: true }
+      }, messages: {
+        email: {
+          required: "Please enter your email",
+          email: "Please enter a validemail address",
+          remote: "User not found" 
+          },
+          password: { 
+            required: "Pleaseenter your password",
+            remote: "Incorrect password"
+            }
+          }, 
+        }); 
+      });
+</script>
+<style>
+  @import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  .signup-click {
     font-size: 12px;
-}
-.signup-link{
+  }
+
+  .signup-link {
     color: #160cde;
-}
-.error{
-  color: #ff4b2b;
-  font-size: 12px;
-}		
+  }
 
-body {
-  margin: 0;
-  font-family: "Raleway", sans-serif;
-}
+  .error {
+    color: #ff4b2b;
+    font-size: 12px;
+  }
 
-.container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-.container:hover .top:before, .container:hover .top:after, .container:hover .bottom:before, .container:hover .bottom:after, .container:active .top:before, .container:active .top:after, .container:active .bottom:before, .container:active .bottom:after {
-  margin-left: 200px;
-  transform-origin: -200px 50%;
-  transition-delay: 0s;
-}
-.container:hover .center, .container:active .center {
-  opacity: 1;
-  transition-delay: 0.2s;
-}
+  body {
+    margin: 0;
+    font-family: "Raleway", sans-serif;
+  }
 
-.top:before, .top:after, .bottom:before, .bottom:after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 200vmax;
-  height: 200vmax;
-  top: 50%;
-  left: 50%;
-  margin-top: -100vmax;
-  transform-origin: 0 50%;
-  transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
-  z-index: 10;
-  opacity: 0.65;
-  transition-delay: 0.2s;
-}
+  .container {
+    position:
+      absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 
-.top:before {
-  transform: rotate(45deg);
-  background: #2b2a2a;
-}
-.top:after {
-  transform: rotate(135deg);
-  background: #d7d4d1;
-}
+  .container:hover .top:before,
+  .container:hover .top:after,
+  .container:hover .bottom:before,
+  .container:hover .bottom:after,
+  .container:active .top:before,
+  .container:active .top:after,
+  .container:active .bottom:before,
+  .container:active .bottom:after {
+    margin-left: 200px;
+    transform-origin: -200px 50%;
+    transition-delay: 0s;
+  }
 
-.bottom:before {
-  transform: rotate(-45deg);
-  background: #579aae;
-}
-.bottom:after {
-  transform: rotate(-135deg);
-  background: #b5374e;
-}
+  .container:hover .center,
+  .container:active .center {
+    opacity: 1;
+    transition-delay: 0.2s;
+  }
 
-.center {
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  top: 50%;
-  left: 50%;
-  margin-left: -200px;
-  margin-top: -200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 30px;
-  opacity: 0;
-  transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
-  transition-delay: 0s;
-  color: #333;
-}
-.center input {
-  width: 100%;
-  padding: 15px;
-  margin: 5px;
-  border-radius: 1px;
-  border: 1px solid #ccc;
-  font-family: inherit;
-  color: black;
-}
-button {
-	border-radius: 20px;
-	border: 1px solid #ff4b2b;
-	background-color: #ff4b2b;
-	color: #ffffff;
-	font-size: 15px;
-	font-weight: bold;
-	padding: 12px 45px;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	transition: transform 80ms ease-in;
-    margin-top: 30px;
-}
+  .top:before,
+  .top:after,
+  .bottom:before,
+  .bottom:after {
+    content: "";
+    display: block;
+    position:
+      absolute;
+    width: 200vmax;
+    height: 200vmax;
+    top: 50%;
+    left: 50%;
+    margin-top:
+      -100vmax;
+    transform-origin: 0 50%;
+    transition: all 0.5s cubic-bezier(0.445,
+        0.05, 0, 1);
+    z-index: 10;
+    opacity: 0.65;
+    transition-delay: 0.2s;
+  }
 
-button:active {
-	transform: scale(0.95);
-}
+  .top:before {
+    transform: rotate(45deg);
+    background: #2b2a2a;
+  }
 
-button:focus {
-	outline: none;
-}
+  .top:after {
+    transform:
+      rotate(135deg);
+    background: #d7d4d1;
+  }
 
-button.ghost {
-	background-color: transparent;
-	border-color: #ffffff;
-}
-  </style>
+  .bottom:before {
+    transform:
+      rotate(-45deg);
+    background: #579aae;
+  }
+
+  .bottom:after {
+    transform:
+      rotate(-135deg);
+    background: #b5374e;
+  }
+
+  .center {
+    position: absolute;
+    width:
+      400px;
+    height: 400px;
+    top: 50%;
+    left: 50%;
+    margin-left: -200px;
+    margin-top:
+      -200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
+    transition-delay: 0s;
+    color: #333;
+  }
+
+  .center input {
+    width: 100%;
+    padding: 15px;
+    margin: 5px;
+    border-radius: 1px;
+    border:
+      1px solid #ccc;
+    font-family: inherit;
+    color: black;
+  }
+
+  button {
+    border-radius:
+      20px;
+    border: 1px solid #ff4b2b;
+    background-color: #ff4b2b;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+    margin-top:
+      30px;
+  }
+
+  button:active {
+    transform: scale(0.95);
+  }
+
+  button:focus {
+    outline:
+      none;
+  }
+
+  button.ghost {
+    background-color: transparent;
+    border-color: #ffffff;
+  }
+</style>

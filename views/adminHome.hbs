@@ -1,100 +1,105 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
 <div class="container-fluid">
-<nav class="navbar navbar-expand-lg navbar-light  text-center">
-  <a class="navbar-brand col-9 " id="heading-font" href="#">ADMIN PANEL</a>
+  <nav class="navbar navbar-expand-lg navbar-light text-center">
+    <a class="navbar-brand col-9" id="heading-font" href="#">ADMIN PANEL</a>
 
+    <div class="collapse navbar-collapse col-2" id="navbarSupportedContent">
+      <form class="form-inline my-2 my-lg-0" action="/admin/search-user" method="post">
+        <input class="form-control mr-sm-2 m-1" type="search" placeholder="Search" name="name" aria-label="Search" />
+        <button class="btn btn-outline-success my-2 my-sm-0 m-1" type="submit">Search</button>
+        <a class="btn btn-danger m-1" href="/admin/create-user">Create user</a>
 
-  <div class="collapse navbar-collapse col-2" id="navbarSupportedContent">
-    <form class="form-inline my-2 my-lg-0" action="/admin/search-user" method="post">
-      <input class="form-control mr-sm-2 m-1" type="search" placeholder="Search" name="name" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0 m-1" type="submit">Search</button>
-        <a class="btn btn-danger m-1" href="/admin/create-user" >Create user</a>
-
-    </form>
-  </div>
-</nav>
+      </form>
+    </div>
+  </nav>
 </div>
 <div class="container">
 
-<table class="table table-dark text-center ">
-  <thead>
-    <tr>
-      <th scope="col">SL NO:</th>
-      <th scope="col">IMAGE</th>
-      <th scope="col">USERNAME</th>
-      <th scope="col">EMAIL</th>
-      <th scope="col">MOBILE NO:</th>
-      <th scope="col">ACTION</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each users}}
-    <tr>
-      <td scope="col"></td>
-      <td scope="col d-flex ">
-        <div class="image-fit  justify-content-center">
-         {{#if this.image}}
-        <img src="/image/{{this.image}}" class="avatar img-circle img-thumbnail" width="50" height="50" >
-         {{else}} 
-         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="avatar img-circle img-thumbnail" width="50" >
-       {{/if}} 
-       </div>
-       </td>
-      <td scope="col"><span id="user-name">{{this.name}}</span></td>
-      <td scope="col">{{this.email}}</td>
-      <td scope="col">{{this.phone}}</td>
-      <td scope="col">
-        <a class="btn btn-primary" href="/admin/edit/{{this._id}}">Edit</a>
-        <a class="btn btn-danger" href="/admin/delete-user/{{this._id}}">Delete</a>
-      </td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
+  <table class="table table-dark text-center">
+    <thead>
+      <tr>
+        <th scope="col">SL NO:</th>
+        <th scope="col">IMAGE</th>
+        <th scope="col">USERNAME</th>
+        <th scope="col">EMAIL</th>
+        <th scope="col">MOBILE NO:</th>
+        <th scope="col">ACTION</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+      <tr>
+        <td scope="col"></td>
+        <td scope="col d-flex ">
+          <div class="image-fit justify-content-center">
+            {{#if this.image}}
+            <img src="/image/{{this.image}}" class="avatar img-circle img-thumbnail" width="50" height="50" />
+            {{else}}
+            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="avatar img-circle img-thumbnail"
+              width="50" />
+            {{/if}}
+          </div>
+        </td>
+        <td scope="col"><span id="user-name">{{this.name}}</span></td>
+        <td scope="col">{{this.email}}</td>
+        <td scope="col">{{this.phone}}</td>
+        <td scope="col">
+          <a class="btn btn-primary" href="/admin/edit/{{this._id}}">Edit</a>
+          <a class="btn btn-danger" href="/admin/delete-user/{{this._id}}">Delete</a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
 
-<div class=" d-flex mt-4 justify-content-center">
-<a class="btn  btn-danger" href="/admin/logOut">Logout</a>
-</div>
-<div class="footer">
-<p>PoweredBy @ajumal</p>
-</div>
+  <div class="d-flex mt-4 justify-content-center">
+    <a class="btn btn-danger" href="/admin/logOut">Logout</a>
+  </div>
+  <div class="footer">
+    <p>PoweredBy @ajumal</p>
+  </div>
 </div>
 <style>
-  body
-{
+  body {
     counter-reset: Serial;
-}
-tbody tr td:first-child:before
-{
-  counter-increment: Serial;
-  content:  counter(Serial); 
-}
-#user-name{
-  text-transform:uppercase;
-  font-size: 15px;
-}
-#heading-font{
-  font-weight: 800;
-  font-style: italic;
-  font-size: 40px;
-  color: #15c5b0;
-  text-shadow: 2px 2px gray;
-}
-.footer{
-  width: 100%;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.image-fit{
-  height: 80px;
-}
+  }
+
+  tbody tr td:first-child:before {
+    counter-increment: Serial;
+    content: counter(Serial);
+  }
+
+  #user-name {
+    text-transform: uppercase;
+    font-size: 15px;
+  }
+
+  #heading-font {
+    font-weight:
+      800;
+    font-style: italic;
+    font-size: 40px;
+    color: #15c5b0;
+    text-shadow: 2px 2px gray;
+  }
+
+  .footer {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items:
+      center;
+    justify-content: center;
+  }
+
+  .image-fit {
+    height: 80px;
+  }
 </style>
- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../../assets/js/vendor/popper.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script
+  src = "../../assets/js/vendor/jquery-slim.min.js" ><\/script>')</script>
+<script src="../../assets/js/vendor/popper.min.js"></script>
+<script src="../../dist/js/bootstrap.min.js"></script>
