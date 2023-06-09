@@ -41,6 +41,7 @@ const adminLogin = (req,res)=>{
 const login =(req,res)=>{
     const email = 'admin@gmail.com'
     const password ='1234'
+    const error = 'User not found!!!!'
     
     if(email == req.body.email && password == req.body.password){
         req.session.admin={
@@ -48,7 +49,7 @@ const login =(req,res)=>{
         }
         res.redirect('/admin/')
     }else{
-        res.render('adminLogin',{error:true,message:'User not found!!!'})
+        res.render('adminLogin',{error})
     }  
 }
 
@@ -101,14 +102,13 @@ const searchUser= async(req,res)=>{
     res.render('adminHome', {users})
 }
 
-const createUser = (req,res)=>{
+const createUser = async (req,res)=>{
     const {name, email, phone , password} = req.body;
-    
-if(email ==""|| name == ""|| phone ==""||password==""){
-    const error ="all field reqiured"
-    res.render('createUser',{error})
-}
-else{
+    const duplicate = await userModel.findOne({email})
+    const error = "Email already exists"
+    if(duplicate){
+        res.render('createUser',{error})
+    }else{
     if(req.file){
          user =new userModel({email:email,name:name,phone:phone,password:password,image:req.file.filename
         })
@@ -127,8 +127,7 @@ else{
     }).catch(error => {console.log(error);})
 }
 
-
-}
+    }
 
 const getCreateUser = (req,res)=>{
     res.render('createUser')

@@ -11,7 +11,7 @@ const path = require('path')
 const app=express()
 
 
-const PORT=50000;
+const PORT=process.env.PORT||8080
 
 // database connection
 dbConnect()

@@ -2,7 +2,7 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<form class="form-horizontal" role="form" action="/edit-user" method="post" enctype="multipart/form-data">
+<form id="formValidation" class="form-horizontal" role="form" action="/edit-user" method="post" enctype="multipart/form-data">
 <div class="container bootstrap snippets bootdey">
     <h1 class="text-primary">Edit User <span id="user-name">{{user.name}}</span></h1>
       <hr>
@@ -55,12 +55,59 @@
       </div>
 </div>
 <hr>
+<script>
+  $(document).ready(function() {
+            $.validator.addMethod("noSpace", function(value, element) {
+                return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
+            }, "Name must contain characters or numbers without spaces.");
+
+            $("#formValidation").validate({
+                rules: {
+                  name:{
+                    required:true,
+                    minlength:2,
+                    noSpace:true
+                  },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    phone:{
+                      required:true,
+                      minlength:10,
+                      maxlength:10
+                    }
+                },
+                messages: {
+                  name:{
+                    required:"Please enter your name",
+                    minlength:"Name atleast 2 charcters",
+                    noSpace:"Name contain number or characters"
+                  },
+                    email: {
+                        required: "Please enter your email",
+                        email: "Please enter a valid email address",
+                        remote: "User not found"
+                    },
+                    phone:{
+                      required:"Please enter your Phone NO:",
+                      minlength:"Phone number must contain 10 numbers",
+                      maxlength:"phone number maximum contain 10 numbers"
+                    }
+                },
+            });
+        });
+</script>
 <style>
     body{margin-top:20px;}
 .avatar{
 width:200px;
 height:200px;
-}			
+}		
+.error{
+  color: #ff4b2b;
+  font-size: 12px;
+}		
 #user-name{
   text-transform: uppercase;
 }	 

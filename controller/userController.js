@@ -38,17 +38,12 @@ const getSignup = (req, res) => {
   res.render("userSignUp");
 };
 const signUp = async (req, res) => {
-  
-  try{
     const { name, email, phone, password } = req.body;
-  }catch{
-    console.log()
-  }
-  
-  if (email == "" || password == "" || phone == "" || password == "") {
-    const err = "all field required";
-    res.render("userSignUp", { err });
-  } else {
+    const duplicate = await userModel.findOne({email})
+    const error = "Email already exists"
+    if(duplicate){
+      res.render('userSignUP',{error})
+    }else{
     const user = new userModel({
       email: email,
       name: name,
@@ -71,6 +66,7 @@ const signUp = async (req, res) => {
       .catch((error) => {
         console.log(error);
       });
+    }
   }
   //else{
   //     const user =new userModel({email:email,name:name,phone:phone,password:password})
@@ -82,7 +78,7 @@ const signUp = async (req, res) => {
   //         }
   //     })
   // }
-};
+
 const userLogin = async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -90,15 +86,19 @@ const userLogin = async (req, res) => {
   const userOg = await userModel.findOne({ email });
   if (userOg) {
     if (password == userOg.password) {
+      req.session.user=true
       req.session.user = {
         id: userOg._id,
         name: userOg.name,
       };
       res.redirect("/");
+    }else if(password!==userOg.password||email!==userOg.email){
+      const error = "Invalid Email or Password";
+      res.render("userLogin", { error });
     }
-  } else {
-    const error = "user not found";
-    res.render("userLogin", { error });
+  }else{
+    error ="user not found"
+    res.render("userLogin",{error});
   }
 };
 const getUserEdit = async (req, res) => {
