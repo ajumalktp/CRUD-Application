@@ -1,265 +1,345 @@
 <div class="container" onclick="onclick">
-        <div class="top"></div>
-        <div class="bottom"></div>
-        <div class="center">
-            <div class="main-w3layouts wrapper">
-                <div class="main-agileinfo">
-                  <div class="agileits-top">
-                    <h2>SignUp Now</h2>
-                    <form action="/signUp" method="post" enctype="multipart/form-data">
-                      <input class="text" type="text" name="name" placeholder="Username" required="">
-                      <input class="text email" type="email" name="email" placeholder="Email" required="">
-                      <input class="text" type="number" name="phone" placeholder="Phone No" required="">
-                      <input style="margin-bottom: 20px;" class="text w3lpass" type="password" name="password" placeholder="Password" required="">
-                      <input type="submit" value="SIGNUP">
-                    </form>
-                    <p>Already have Account? <a href="/"> Login Now!</a></p>
-                  </div>
-                </div>
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div class="center">
+    <div class="main-w3layouts wrapper">
+      <div class="main-agileinfo">
+        <div class="agileits-top">
+          <h2>SignUp Now</h2>
+          <h2 class="error">{{error}}</h2>
+          <form action="/signUp" method="post" enctype="multipart/form-data" id="formValidation">
+            <input class="text" type="text" name="name" placeholder="Username">
+            <input class="text email" type="email" name="email" placeholder="Email" id="email">
+            <input class="text" type="number" name="phone" placeholder="Phone No">
+            <input class="text w3lpass" type="password" name="password" placeholder="Password">
+            <input type="submit" value="SIGNUP">
+
+          </form>
+          <p>Already have Account? <a href="/"> Login Now!</a></p>
         </div>
       </div>
-      <style>
-        
-@import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
+    </div>
+  </div>
+  <script>
+    $(document).ready(function () {
+      $.validator.addMethod("noSpace", function (value, element) {
+        return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
+      }, "Name must contain characters or numbers without spaces.");
 
-body {
-  margin: 0;
-  font-family: "Raleway", sans-serif;
-}
-h2{
-    text-align: center;
-    background-color: #fff;
+      $("#formValidation").validate({
+        rules: {
+          name: {
+            required: true,
+            minlength: 2,
+            noSpace: true
+          },
+          email: {
+            required: true,
+            email: true,
+          },
+          phone: {
+            required: true,
+            minlength: 10,
+            maxlength: 10
+          },
+          password: {
+            required: true,
+            minlength: 4
+          }
+        },
+        messages: {
+          name: {
+            required: "Please enter your name",
+            minlength: "Name atleast 2 charcters",
+            noSpace: "Name contain number or characters"
+          },
+          email: {
+            required: "Please enter your email",
+            email: "Please enter a valid email address",
 
-}
+          },
+          phone: {
+            required: "Please enter your Phone NO:",
+            minlength: "Phone number must contain 10 numbers",
+            maxlength: "phone number maximum contain 10 numbers"
+          },
+          password: {
+            required: "Please enter your password",
+            minlength: "password must contain 4 letters",
+            remote: "Incorrect password"
+          }
+        },
+      });
+    });
+  </script>
+  <style>
+    @import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
 
-.container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-.container:hover .top:before, .container:hover .top:after, .container:hover .bottom:before, .container:hover .bottom:after, .container:active .top:before, .container:active .top:after, .container:active .bottom:before, .container:active .bottom:after {
-  margin-left: 260px;
-  transform-origin: -260px 50%;
-  transition-delay: 0s;
-}
-.container:hover .center, .container:active .center {
-  opacity: 1;
-  transition-delay: 0.2s;
-}
+    body {
+      margin: 0;
+      font-family: "Raleway", sans-serif;
+    }
 
-.top:before, .top:after, .bottom:before, .bottom:after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 200vmax;
-  height: 200vmax;
-  top: 50%;
-  left: 50%;
-  margin-top: -100vmax;
-  transform-origin: 0 50%;
-  transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
-  z-index: 10;
-  opacity: 0.65;
-  transition-delay: 0.2s;
-}
+    h2 {
+      text-align: center;
+      background-color: #fff;
 
-.top:before {
-  transform: rotate(90deg);
-  background: #e46569;
-}
-.top:after {
-  transform: rotate(-180deg);
-  background: #ecaf81;
-}
+    }
 
-.bottom:before {
-  transform: rotate(360deg);
-  background: #60b8d4;
-}
-.bottom:after {
-  transform: rotate(-90deg);
-  background: #3745b5;
-}
+    .container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
 
-.center {
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  top: 50%;
-  left: 50%;
-  margin-left: -265px;
-  margin-top: -300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 30px;
-  opacity: 0;
-  transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
-  transition-delay: 0s;
-  color: #333;
-}
-.center input {
-  width: 100%;
-  margin: 5px;
-  font-family: inherit;
-  margin-bottom: 20px;
-}
-button {
-	border-radius: 20px;
-	border: 1px solid #ff4b2b;
-	background-color: #ff4b2b;
-	color: #ffffff;
-	font-size: 15px;
-	font-weight: bold;
-	padding: 12px 45px;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	transition: transform 80ms ease-in;
-    margin-top: 30px;
-}
+    .container:hover .top:before,
+    .container:hover .top:after,
+    .container:hover .bottom:before,
+    .container:hover .bottom:after,
+    .container:active .top:before,
+    .container:active .top:after,
+    .container:active .bottom:before,
+    .container:active .bottom:after {
+      margin-left: 260px;
+      transform-origin: -260px 50%;
+      transition-delay: 0s;
+    }
 
-button:active {
-	transform: scale(0.95);
-}
+    .container:hover .center,
+    .container:active .center {
+      opacity: 1;
+      transition-delay: 0.2s;
+    }
 
-button:focus {
-	outline: none;
-}
+    .top:before,
+    .top:after,
+    .bottom:before,
+    .bottom:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 200vmax;
+      height: 200vmax;
+      top: 50%;
+      left: 50%;
+      margin-top: -100vmax;
+      transform-origin: 0 50%;
+      transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
+      z-index: 10;
+      opacity: 0.65;
+      transition-delay: 0.2s;
+    }
 
-button.ghost {
-	background-color: transparent;
-	border-color: #ffffff;
-}
+    .top:before {
+      transform: rotate(90deg);
+      background: #e46569;
+    }
 
-.main-w3layouts {
-    padding: 3em 0 1em;
-    
-  }
-  
-  .main-agileinfo {
-    width: 350px;
-    height: 350px;
-    margin: 3em auto;
-    background:white;
-    background-size: cover;
-  }
-  
-  .agileits-top {
-    padding: 3em;
-    height: 325px;
-    width: 325px;
-    background-color: white;
-    margin-top: -80px;
-  }
-  
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="number"] {
-    font-size: 0.9em;
-    color:white;
-    font-weight: 100;
-    width: 94.5%;
-    display: block;
-    border: none;
-    padding: 0.8em;
-    border: solid 1px black;
-    -webkit-transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
-    transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
-    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 96%,black);
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%,black);
-    background-position: -800px 0;
-    background-size: 100%;
-    background-repeat: no-repeat;
-    color:black;
-    font-family: "Roboto", sans-serif;
-  }
-  
-  input.email,
-  input.text.w3lpass {
-    margin: 2em 0;
-  }
-  
-  .text:focus,
-  .text:valid {
-    box-shadow: none;
-    outline: none;
-    background-position: 0 0;
-  }
-  
-  .text:focus::-webkit-input-placeholder,
-  .text:valid::-webkit-input-placeholder {
-    color: black;
-    font-size: 0.9em;
-    -webkit-transform: translateY(-30px);
-    -moz-transform: translateY(-30px);
-    -o-transform: translateY(-30px);
-    -ms-transform: translateY(-30px);
-    transform: translateY(-30px);
-    visibility: visible !important;
-  }
-  
-  ::-webkit-input-placeholder {
-    color:rgb(129, 126, 126);
-    font-weight: 100;
-  }
-  
-  :-moz-placeholder {
-    /* Firefox 18- */
-    color: #fff;
-  }
-  
-  ::-moz-placeholder {
-    /* Firefox 19+ */
-    color: #fff;
-  }
-  
-  :-ms-input-placeholder {
-    color: #fff;
-  }
-  
-  input[type="submit"] {
-    font-size: 0.9em;
-    color: #fff;
-    background: #76b852;
-    outline: none;
-    border: 1px solid #76b852;
-    cursor: pointer;
-    padding: 0.9em;
-    -webkit-appearance: none;
-    width: 100%;
-    margin: 0px;
-    letter-spacing: 4px;
-  }
-  
-  input[type="submit"]:hover {
-    -webkit-transition: 0.5s all;
-    -moz-transition: 0.5s all;
-    -o-transition: 0.5s all;
-    -ms-transition: 0.5s all;
-    transition: 0.5s all;
-    background: #8dc26f;
-  }
-  
-  .agileits-top p {
-    font-size: 12px;
-    color:black;
-    text-align: center;
-    letter-spacing: 1px;
-    font-weight: 300;
-  }
-  
-  .agileits-top p a {
-    color:#160cde;
-    -webkit-transition: 0.5s all;
-    -moz-transition: 0.5s all;
-    transition: 0.5s all;
-    font-weight: 400;
-  }
-  
-  .agileits-top p a:hover {
-    color: #76b852;
-  }
-      </style>
+    .top:after {
+      transform: rotate(-180deg);
+      background: #ecaf81;
+    }
+
+    .bottom:before {
+      transform: rotate(360deg);
+      background: #60b8d4;
+    }
+
+    .bottom:after {
+      transform: rotate(-90deg);
+      background: #3745b5;
+    }
+
+    .center {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      top: 50%;
+      left: 50%;
+      margin-left: -265px;
+      margin-top: -300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
+      transition-delay: 0s;
+      color: #333;
+    }
+
+    .center input {
+      width: 100%;
+      margin: 5px;
+      font-family: inherit;
+      margin-bottom: 20px;
+    }
+
+    button {
+      border-radius: 20px;
+      border: 1px solid #ff4b2b;
+      background-color: #ff4b2b;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 12px 45px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: transform 80ms ease-in;
+      margin-top: 30px;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    button:focus {
+      outline: none;
+    }
+
+    button.ghost {
+      background-color: transparent;
+      border-color: #ffffff;
+    }
+
+    .main-w3layouts {
+      padding: 3em 0 1em;
+
+    }
+
+    .main-agileinfo {
+      width: 350px;
+      height: 350px;
+      margin: 3em auto;
+      background: white;
+      background-size: cover;
+    }
+
+    .agileits-top {
+      padding: 3em;
+      height: 325px;
+      width: 325px;
+      background-color: white;
+      margin-top: -80px;
+    }
+
+    input ::placeholder {
+      color: black;
+      font-size: 10px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"] {
+      font-size: 0.9em;
+      font-weight: 100;
+      width: 94.5%;
+      display: block;
+      border: none;
+      padding: 0.8em;
+      border: solid 1px black;
+      -webkit-transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+      transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+      background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 96%, black);
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, black);
+      background-position: -800px 0;
+      background-size: 100%;
+      background-repeat: no-repeat;
+      color: black;
+      font-family: "Roboto", sans-serif;
+      margin-bottom: 0;
+      margin-top: 20px;
+    }
+
+    input.email,
+    input.text.w3lpass {
+      margin-bottom: 0;
+
+    }
+
+    .text:focus,
+    .text:valid {
+      box-shadow: none;
+      outline: none;
+      background-position: 0 0;
+    }
+
+    .text:focus::-webkit-input-placeholder,
+    .text:valid::-webkit-input-placeholder {
+      color: black;
+      font-size: 15px;
+      visibility: visible !important;
+      font-family: sans-serif;
+    }
+
+    ::-webkit-input-placeholder {
+      color: rgb(129, 126, 126);
+      font-weight: 100;
+    }
+
+    :-moz-placeholder {
+      /* Firefox 18- */
+      color: #fff;
+    }
+
+    ::-moz-placeholder {
+      /* Firefox 19+ */
+      color: #fff;
+    }
+
+    :-ms-input-placeholder {
+      color: #fff;
+    }
+
+    input[type="submit"] {
+      font-size: 0.9em;
+      color: #fff;
+      background: #76b852;
+      outline: none;
+      border: 1px solid #76b852;
+      cursor: pointer;
+      padding: 0.9em;
+      -webkit-appearance: none;
+      width: 100%;
+      letter-spacing: 4px;
+      margin-top: 20px;
+    }
+
+    input[type="submit"]:hover {
+      -webkit-transition: 0.5s all;
+      -moz-transition: 0.5s all;
+      -o-transition: 0.5s all;
+      -ms-transition: 0.5s all;
+      transition: 0.5s all;
+      background: #8dc26f;
+    }
+
+    .agileits-top p {
+      font-size: 12px;
+      color: black;
+      text-align: center;
+      letter-spacing: 1px;
+      font-weight: 300;
+    }
+
+    .agileits-top p a {
+      color: #160cde;
+      -webkit-transition: 0.5s all;
+      -moz-transition: 0.5s all;
+      transition: 0.5s all;
+      font-weight: 400;
+    }
+
+    .agileits-top p a:hover {
+      color: #76b852;
+    }
+
+    .error {
+      color: #ff4b2b;
+      font-size: 12px;
+      margin: 0;
+    }
+  </style>

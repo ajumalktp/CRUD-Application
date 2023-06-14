@@ -1,133 +1,192 @@
 <div class="container" onclick="onclick">
-    <div class="top"></div>
-    <div class="bottom"></div>
-    <form action="/login" method="post">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <form action="/login" method="post" id="formValidation">
     <div class="center">
       <h2>PLEASE LOGIN</h2>
-      <input type="email" placeholder="email" required="email" name="email"/>
-      <input type="password" placeholder="password" required="password" name="password"/>
+      <input type="email" placeholder="email" name="email" id="email" />
+      <input type="password" placeholder="password" name="password" id="password" />
+      {{#if error}}
+      <div id="errorContainer" class="error">{{error}}</div>
+      {{else}}
+      <div id="errorContainer"></div>
+      {{/if}}
       <button type="submit">Login</button>
       <p class="signup-click">You didn't have any account?<a href="/signUP" class="signup-link">signUp</a></p>
     </div>
-    </form>
-  </div>
-  <style>
-    @import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
-*, *:before, *:after {
-  box-sizing: border-box;
-}
-.signup-click{
+  </form>
+</div>
+<script>
+  $(document).ready(function () {
+    $("#formValidation").validate({
+      rules: {
+        email: {
+          required: true,
+          email: true
+        },
+        password: {
+          required: true
+        }
+      },
+      messages: {
+        email: {
+          required: "Please enter your email",
+          email: "Please enter a valid email address",
+          remote: "User not found"
+        },
+        password: {
+          required: "Please enter your password",
+          remote: "Incorrect password"
+        }
+      },
+    });
+  });
+</script>
+<style>
+  @import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  .signup-click {
     font-size: 12px;
-}
-.signup-link{
+  }
+
+  .signup-link {
     color: #160cde;
-}
+  }
 
-body {
-  margin: 0;
-  font-family: "Raleway", sans-serif;
-}
+  body {
+    margin: 0;
+    font-family: "Raleway", sans-serif;
+  }
 
-.container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-.container:hover .top:before, .container:hover .top:after, .container:hover .bottom:before, .container:hover .bottom:after, .container:active .top:before, .container:active .top:after, .container:active .bottom:before, .container:active .bottom:after {
-  margin-left: 200px;
-  transform-origin: -200px 50%;
-  transition-delay: 0s;
-}
-.container:hover .center, .container:active .center {
-  opacity: 1;
-  transition-delay: 0.2s;
-}
+  .container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 
-.top:before, .top:after, .bottom:before, .bottom:after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 200vmax;
-  height: 200vmax;
-  top: 50%;
-  left: 50%;
-  margin-top: -100vmax;
-  transform-origin: 0 50%;
-  transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
-  z-index: 10;
-  opacity: 0.65;
-  transition-delay: 0.2s;
-}
+  .container:hover .top:before,
+  .container:hover .top:after,
+  .container:hover .bottom:before,
+  .container:hover .bottom:after,
+  .container:active .top:before,
+  .container:active .top:after,
+  .container:active .bottom:before,
+  .container:active .bottom:after {
+    margin-left: 200px;
+    transform-origin: -200px 50%;
+    transition-delay: 0s;
+  }
 
-.top:before {
-  transform: rotate(45deg);
-  background: #e46569;
-}
-.top:after {
-  transform: rotate(135deg);
-  background: #ecaf81;
-}
+  .container:hover .center,
+  .container:active .center {
+    opacity: 1;
+    transition-delay: 0.2s;
+  }
 
-.bottom:before {
-  transform: rotate(-45deg);
-  background: #60b8d4;
-}
-.bottom:after {
-  transform: rotate(-135deg);
-  background: #3745b5;
-}
+  .top:before,
+  .top:after,
+  .bottom:before,
+  .bottom:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 200vmax;
+    height: 200vmax;
+    top: 50%;
+    left: 50%;
+    margin-top: -100vmax;
+    transform-origin: 0 50%;
+    transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
+    z-index: 10;
+    opacity: 0.65;
+    transition-delay: 0.2s;
+  }
 
-.center {
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  top: 50%;
-  left: 50%;
-  margin-left: -200px;
-  margin-top: -200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 30px;
-  opacity: 0;
-  transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
-  transition-delay: 0s;
-  color: #333;
-}
-.center input {
-  width: 100%;
-  padding: 15px;
-  margin: 5px;
-  border-radius: 1px;
-  border: 1px solid #ccc;
-  font-family: inherit;
-}
-button {
-	border-radius: 20px;
-	border: 1px solid #ff4b2b;
-	background-color: #ff4b2b;
-	color: #ffffff;
-	font-size: 15px;
-	font-weight: bold;
-	padding: 12px 45px;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	transition: transform 80ms ease-in;
+  .top:before {
+    transform: rotate(45deg);
+    background: #e46569;
+  }
+
+  .top:after {
+    transform: rotate(135deg);
+    background: #ecaf81;
+  }
+
+  .bottom:before {
+    transform: rotate(-45deg);
+    background: #60b8d4;
+  }
+
+  .bottom:after {
+    transform: rotate(-135deg);
+    background: #3745b5;
+  }
+
+  .center {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    top: 50%;
+    left: 50%;
+    margin-left: -200px;
+    margin-top: -200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
+    transition-delay: 0s;
+    color: #333;
+  }
+
+  .center input {
+    width: 100%;
+    padding: 15px;
+    margin: 5px;
+    border-radius: 1px;
+    border: 1px solid #ccc;
+    font-family: inherit;
+    color: black;
+  }
+
+  button {
+    border-radius: 20px;
+    border: 1px solid #ff4b2b;
+    background-color: #ff4b2b;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
     margin-top: 30px;
-}
+  }
 
-button:active {
-	transform: scale(0.95);
-}
+  button:active {
+    transform: scale(0.95);
+  }
 
-button:focus {
-	outline: none;
-}
+  button:focus {
+    outline: none;
+  }
 
-button.ghost {
-	background-color: transparent;
-	border-color: #ffffff;
-}
-  </style>
+  button.ghost {
+    background-color: transparent;
+    border-color: #ffffff;
+  }
+
+  .error {
+    color: #ff4b2b;
+    font-size: 12px;
+  }
+</style>
