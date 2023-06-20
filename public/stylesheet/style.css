@@ -47,3 +47,6 @@ body{
 .content-text p{
   margin: 0;
 }
+@media (max-width: 768px){
+  
+}
